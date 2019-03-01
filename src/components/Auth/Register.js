@@ -60,6 +60,10 @@ export default class Register extends Component {
         return true;
     }
 
+    handleInputError = (input) => {
+        return this.state.error.toLowerCase().indexOf(input) > -1;
+    }
+
     isPasswordsValid = () => {
 
         const { password, passwordConfirmation } = this.state;
@@ -84,16 +88,16 @@ export default class Register extends Component {
                     </Header>
                     <Form onSubmit={this.handleSubmit}>
                         <Segment stacked>
-                            <Form.Input fluid name="username" icon="user" iconPosition="left" placeholder="Username" type="text"
+                            <Form.Input fluid name="username" error={this.handleInputError('username')} icon="user" iconPosition="left" placeholder="Username" type="text"
                                 value={username}
                                 onChange={this.handleChange} />
-                            <Form.Input fluid name="email" icon="mail" iconPosition="left" placeholder="Email" type="text"
+                            <Form.Input fluid error={this.handleInputError('email')} name="email" icon="mail" iconPosition="left" placeholder="Email" type="text"
                                 value={email}
                                 onChange={this.handleChange} />
-                            <Form.Input fluid name="password" icon="lock" iconPosition="left" placeholder="Password" type="password"
+                            <Form.Input fluid name="password" error={this.handleInputError('password')} icon="lock" iconPosition="left" placeholder="Password" type="password"
                                 value={password}
                                 onChange={this.handleChange} />
-                            <Form.Input fluid name="passwordConfirmation" icon="repeat" iconPosition="left" placeholder="Password Confirmation" type="password"
+                            <Form.Input fluid name="passwordConfirmation" error={this.handleInputError('password')} icon="repeat" iconPosition="left" placeholder="Password Confirmation" type="password"
                                 value={passwordConfirmation}
                                 onChange={this.handleChange} />
 
