@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Grid, Form, Segment, Button, Header, Message, Icon } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import firebase from "../../firebase";
+import md5 from "md5";
 
 export default class Register extends Component {
 
@@ -9,12 +10,14 @@ export default class Register extends Component {
         super(props)
 
         this.state = {
-            username: '',
-            email: '',
-            password: '',
-            passwordConfirmation: '',
+            username: 'test',
+            email: 'test@test.com',
+            password: 'test123',
+            passwordConfirmation: 'test123',
             error: '',
             loading: false,
+
+            usersRef: firebase.database().ref('users'),
         }
     }
 
@@ -39,8 +42,18 @@ export default class Register extends Component {
 
             this.setState({ loading: true, error: '' });
 
-            const { username, email, password, passwordConfirmation } = this.state;
-            const createdUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            const { username, email, password, passwordConfirmation, usersRef } = this.state;
+            const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+            await user.updateProfile({
+                displayName: username,
+                photoURL: `http://gravatar.com/avatar/${md5(user.email)}?d=identicon`
+            });
+
+            await usersRef.child(user.uid).set({
+                name: user.displayName,
+                avatar: user.photoURL,
+            });
 
         } catch (err) {
             this.setState({ error: err.message });
