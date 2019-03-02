@@ -42,7 +42,7 @@ export default class Register extends Component {
 
             this.setState({ loading: true, error: '' });
 
-            const { username, email, password, passwordConfirmation, usersRef } = this.state;
+            const { username, email, password, usersRef } = this.state;
             const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
 
             await user.updateProfile({

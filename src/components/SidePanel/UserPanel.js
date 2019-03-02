@@ -1,20 +1,30 @@
 import React, { Component } from 'react'
-import { connect } from "react-redux";
 import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
 import firebase from "../../firebase";
 
 class UserPanel extends Component {
 
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            user: this.props.user,
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ user: nextProps.user });
+    }
+
+
     dropDownOptions = () => {
 
-        const { user } = this.props;
-
-        console.log(user);
+        const { user } = this.state;
 
         return [
             {
                 key: "user",
-                text: <span>Signed is as <strong>{user && user.displayName}</strong></span>,
+                text: <span>Signed is as <strong>{user.displayName}</strong></span>,
                 disabled: true
             },
             {
@@ -34,7 +44,7 @@ class UserPanel extends Component {
 
     render() {
 
-        const { user } = this.props;
+        const { user } = this.state;
 
 
         return (
@@ -51,8 +61,8 @@ class UserPanel extends Component {
                     <Header style={{ padding: '1em' }} as="h4" inverted>
                         <Dropdown trigger={
                             <span>
-                                <Image src={user && user.photoURL} spaced="right" avatar />
-                                {user && user.displayName}
+                                <Image src={user.photoURL} spaced="right" avatar />
+                                {user.displayName}
                             </span>
                         } options={this.dropDownOptions()} />
                     </Header>

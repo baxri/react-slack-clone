@@ -20,7 +20,7 @@ import { BrowserRouter as Router, Switch, Route, withRouter } from "react-router
 import rootReducer from "./reducers/index";
 
 // Get Action
-import { setUser } from "./actions/index";
+import { setUser, clearUser } from "./actions/index";
 
 const store = createStore(rootReducer, composeWithDevTools());
 
@@ -28,16 +28,16 @@ class Root extends React.Component {
 
     componentDidMount() {
 
-        const { history, setUser } = this.props;
+        const { history, setUser, clearUser } = this.props;
 
         firebase.auth().onAuthStateChanged(user => {
 
-            setUser(user);
-
             if (user) {
+                setUser(user);
                 history.push('/');
             } else {
                 history.push('/login');
+                clearUser();
             }
         });
     }
@@ -51,6 +51,7 @@ class Root extends React.Component {
                 <Route exact path="/" component={App} />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
+
             </Switch>
         )
     }
@@ -60,7 +61,7 @@ const mapStateToProps = state => ({
     isLoading: state.user.isLoading,
 });
 
-const RootwithRouter = withRouter(connect(mapStateToProps, { setUser })(Root));
+const RootwithRouter = withRouter(connect(mapStateToProps, { setUser, clearUser })(Root));
 
 ReactDOM.render(<Provider store={store}>
     <Router>
