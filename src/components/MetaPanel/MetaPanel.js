@@ -5,7 +5,7 @@ export default class MetaPanel extends Component {
         return (
             <div>
                 MetaPanel
-      </div>
+            </div>
         )
     }
 }

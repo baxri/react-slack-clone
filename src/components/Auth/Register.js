@@ -56,9 +56,7 @@ export default class Register extends Component {
             });
 
         } catch (err) {
-            this.setState({ error: err.message });
-        } finally {
-            this.setState({ loading: false });
+            this.setState({ loading: false, error: err.message });
         }
     }
 

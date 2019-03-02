@@ -38,15 +38,10 @@ export default class Login extends Component {
         throw new Error('Password not defined!');
       }
 
+      this.setState({ loading: true });
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      
-
-      alert("OK");
-
     } catch (err) {
-      this.setState({ error: err.message });
-    } finally {
-      this.setState({ loading: false });
+      this.setState({ loading: false, error: err.message });
     }
   }
 
