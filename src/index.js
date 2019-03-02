@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import firebase from "./firebase";
 
@@ -10,27 +9,45 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import 'semantic-ui-css/semantic.min.css'
 
+import App from './components/App';
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
+import Spinner from "./spinner";
 
 import { BrowserRouter as Router, Switch, Route, withRouter } from "react-router-dom";
 
+// Get root reducer
 import rootReducer from "./reducers/index";
+
+// Get Action
+import { setUser } from "./actions/index";
 
 const store = createStore(rootReducer, composeWithDevTools());
 
 class Root extends React.Component {
 
-    componentWillMount() {
+    componentDidMount() {
+
+        const { history, setUser } = this.props;
+
         firebase.auth().onAuthStateChanged(user => {
+
+            console.log(user);
+            setUser(user);
+
             if (user) {
-                this.props.history.push('/');
+                history.push('/');
+            } else {
+                history.push('/login');
             }
         });
     }
 
     render() {
-        return (
+
+        const { isLoading } = this.props;
+
+        return isLoading ? (<Spinner />) : (
             <Switch>
                 <Route exact path="/" component={App} />
                 <Route path="/login" component={Login} />
@@ -40,9 +57,11 @@ class Root extends React.Component {
     }
 }
 
+const mapStateToProps = state => ({
+    isLoading: state.user.isLoading,
+});
 
-const RootwithRouter = withRouter(Root);
-const ConnectWithRedux = connect(RootwithRouter);
+const RootwithRouter = withRouter(connect(mapStateToProps, { setUser })(Root));
 
 ReactDOM.render(<Provider store={store}>
     <Router>
