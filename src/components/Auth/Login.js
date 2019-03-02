@@ -46,7 +46,7 @@ export default class Login extends Component {
   }
 
   handleInputError = (input) => {
-    return this.state.error.toLowerCase().indexOf(input) > -1;
+    return this.state.error.toLowerCase().indexOf(input.toLowerCase()) > -1;
   }
 
   isPasswordsValid = () => {

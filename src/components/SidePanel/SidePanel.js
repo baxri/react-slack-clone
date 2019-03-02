@@ -19,7 +19,7 @@ export default class SidePanel extends Component {
             >
 
                 <UserPanel user={user} />
-                <Chanels />
+                <Chanels user={user} />
             </Menu>
         )
     }
