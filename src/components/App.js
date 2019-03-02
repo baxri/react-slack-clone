@@ -11,7 +11,7 @@ import MetaPanel from "./MetaPanel/MetaPanel";
 class App extends Component {
   render() {
 
-    const { user } = this.props;
+    const { user, chanel } = this.props;
 
     return (
       <Grid columns="equal">
@@ -19,8 +19,8 @@ class App extends Component {
         <SidePanel user={user} />
         <ColorPanel />
 
-        <Grid.Column style={{ marginLeft: "150px" }}>
-          <Messages />
+        <Grid.Column style={{ marginLeft: "240px" }}>
+          <Messages chanel={chanel} />
         </Grid.Column>
 
         <Grid.Column width="4">
@@ -36,6 +36,7 @@ class App extends Component {
 
 const mapStateToProps = ({ user }) => ({
   user: user.currentUser,
+  chanel: user.currentChanel,
 })
 
 export default connect(mapStateToProps)(App);

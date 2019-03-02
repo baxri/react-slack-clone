@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Menu, Icon, Modal, Form, Input, Button, Message } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { Menu, Icon, Modal, Form, Input, Button, Message, Grid, Dimmer, Image, Segment } from "semantic-ui-react";
 import firebase from "../../firebase";
+import { setCurrentChanel } from "../../actions/index";
 
-export default class Chanels extends Component {
+class Chanels extends Component {
 
     constructor(props) {
         super(props)
@@ -15,6 +17,8 @@ export default class Chanels extends Component {
             modal: false,
             error: '',
             loading: false,
+            chanelsLoading: true,
+            firstLoad: true,
 
             chanelsRef: firebase.database().ref('chanels'),
         }
@@ -24,14 +28,31 @@ export default class Chanels extends Component {
         this.addListeners();
     }
 
+    componentWillUnmount() {
+        this.removeListeners();
+    }
+
     addListeners = () => {
 
         let chanels = [];
 
         this.state.chanelsRef.on('child_added', snap => {
             chanels.push(snap.val());
-            this.setState({ chanels: chanels });
+            this.setState({ chanels: chanels, chanelsLoading: false }, () => this.setDefaultChanel());
         })
+    }
+
+    removeListeners = () => {
+        this.state.chanelsRef.off();
+    }
+
+    setDefaultChanel = () => {
+
+        if (this.state.firstLoad && this.state.chanels.length > 0) {
+            this.props.setCurrentChanel(this.state.chanels[0]);
+        }
+
+        this.setState({ firstLoad: false });
     }
 
     handleChange = (e) => {
@@ -81,12 +102,17 @@ export default class Chanels extends Component {
         return this.state.error.toLowerCase().indexOf(input.toLowerCase()) > -1;
     }
 
+    changeChanel = chanel => {
+        this.props.setCurrentChanel(chanel);
+    }
+
     openModal = () => this.setState({ modal: true });
     closeModal = () => this.setState({ modal: false });
 
     render() {
 
-        const { chanels, modal, error } = this.state;
+        const { chanels, modal, error, chanelsLoading } = this.state;
+        const { chanel } = this.props;
 
         return (
             <React.Fragment>
@@ -98,8 +124,8 @@ export default class Chanels extends Component {
                         <Icon name="add" onClick={this.openModal} />
                     </Menu.Item>
 
-                    {chanels.length > 0 && chanels.map(chanel => (<Menu.Item key={chanel.id}>
-                        # {chanel.name}
+                    {chanels.length > 0 && chanels.map(item => (<Menu.Item active={item == chanel} key={item.id} onClick={() => this.changeChanel(item)}>
+                        # {item.name}
                     </Menu.Item>))}
 
                     <Modal open={modal} onClose={this.closeModal}>
@@ -137,3 +163,10 @@ export default class Chanels extends Component {
         )
     }
 }
+
+
+const mapStateToProps = ({ chanel }) => ({
+    chanel: chanel.currentChanel
+})
+
+export default connect(mapStateToProps, { setCurrentChanel })(Chanels);

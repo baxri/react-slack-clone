@@ -23,7 +23,6 @@ const initialStateChanel = {
     currentChanel: null,
 };
 
-
 const chanelReducer = (state = initialStateChanel, action) => {
     switch (action.type) {
         case actionTypes.SET_CURRENT_CHANEL:

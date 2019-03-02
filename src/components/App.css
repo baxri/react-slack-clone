@@ -5,3 +5,17 @@ body,
   background: #eee;
   padding: 1em;
 }
+
+.messages{
+  height: 440px;
+  overflow-y: scroll;
+}
+
+.message-form{
+  position: fixed !important;
+  margin-left: 270px !important;
+  left: 0px;
+  right: 1em;
+  bottom: 1em;
+  z-index: 200;
+}
