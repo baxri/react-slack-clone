@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Segment, Button, Input, Message } from "semantic-ui-react";
 
 import firebase from "../../firebase";
+import FileModal from "./FileModal";
 
 export default class MessageForm extends Component {
 
@@ -12,11 +13,20 @@ export default class MessageForm extends Component {
             message: '',
             loading: false,
             error: '',
+            modal: false,
         }
     }
 
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    openModal = () => {
+        this.setState({ modal: true });
+    }
+
+    closeModal = () => {
+        this.setState({ modal: false });
     }
 
     sendMessage = async () => {
@@ -53,9 +63,9 @@ export default class MessageForm extends Component {
 
     render() {
 
-        const { error, message, loading } = this.state;
+        const { error, message, loading, modal } = this.state;
 
-        
+
         return (
             <Segment className="messages-form">
                 {error && <Message error>
@@ -84,8 +94,10 @@ export default class MessageForm extends Component {
                         content="Upload Media"
                         labelPosition="right"
                         icon="cloud upload"
+                        onClick={this.openModal}
                     />
 
+                    <FileModal modal={modal} closeModal={this.closeModal} />
 
                 </Button.Group>
             </Segment>

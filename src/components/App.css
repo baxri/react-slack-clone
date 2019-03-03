@@ -6,8 +6,13 @@ body,
 
 .grid{
   margin: 0px !important;
+  padding: 0px !important;
 }
 
+.column{
+  margin: 0px !important;
+  padding: 0px !important;
+}
 
 .side-panel{
   margin: 0px !important;
@@ -16,11 +21,6 @@ body,
 
 .messages-col{
   height: 100vh;
-}
-
-.messages{
-  height: 440px;
-  overflow-y: scroll;
 }
 
 .message-self{

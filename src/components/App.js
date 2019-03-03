@@ -14,16 +14,25 @@ class App extends Component {
     const { user, chanel } = this.props;
 
     return (
-      <Grid columns="equal">
+      <Grid columns="equal" stackable >
 
-        <SidePanel key={user && user.id} user={user} className="sidepanel-col" />
+        <Grid >
+          <Grid.Column only='tablet computer'>
+            <SidePanel key={user && user.id} user={user} className="sidepanel-col" />
+          </Grid.Column>
+        </Grid>
+
         {/* <ColorPanel /> */}
 
-        <Grid.Column className="messages-col">
+        <Grid.Column className="messages-col" >
           <Messages key={chanel && chanel.id} chanel={chanel} user={user} />
         </Grid.Column>
 
-        <MetaPanel />
+        <Grid >
+          <Grid.Column only='tablet computer'>
+            <MetaPanel />
+          </Grid.Column>
+        </Grid>
 
       </Grid >
     );
