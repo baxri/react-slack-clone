@@ -4,20 +4,25 @@ import { Header, Segment, Input, Icon } from "semantic-ui-react";
 export default class MessageHeader extends Component {
 
     countUniqUsers = (messages) => {
-        const user = messages.reduce((acc, message) => {
-            if (message.user && !acc.includes(message.user.id)) {
+
+        if (messages.length == 0) {
+            return 0;
+        }
+
+        const users = messages.reduce((acc, message) => {
+            if (!acc.includes(message.user.id)) {
                 acc.push(message.user.id);
             }
 
             return acc;
-        })
+        }, [])
 
-        return this.countUniqUsers.length;
+        return users.length;
     }
 
     render() {
 
-        const { chanel, messages } = this.props;
+        const { chanel, messages, handleSearch, searchLoader } = this.props;
 
         return (
             <Segment className="messages-header">
@@ -31,7 +36,7 @@ export default class MessageHeader extends Component {
                     </Header.Subheader>
                 </Header>
                 <Header floated="right" >
-                    <Input icon="search" size="mini" name="SearchTerm" placeholder="Search Messages" />
+                    <Input icon="search" size="mini" loading={searchLoader} name="SearchTerm" placeholder="Search Messages" onChange={handleSearch} />
                 </Header>
             </Segment>
         )

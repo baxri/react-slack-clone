@@ -25,7 +25,7 @@ class App extends Component {
         {/* <ColorPanel /> */}
 
         <Grid.Column className="messages-col" >
-          {chanel && <Messages chanel={chanel} user={user} />}
+          {chanel && <Messages key={chanel.id} chanel={chanel} user={user} />}
         </Grid.Column>
 
         <Grid >
