@@ -44,11 +44,11 @@ export default class Messages extends Component {
     render() {
 
         const { messagesRef, messages } = this.state;
-        const { user } = this.props;
+        const { user, chanel } = this.props;
 
         return (
             <React.Fragment>
-                <MessageHeader />
+                <MessageHeader key={chanel && chanel.id} chanel={this.props.chanel} messages={messages} />
 
                 <Segment className="messages-content">
                     <Comment.Group>
@@ -56,7 +56,7 @@ export default class Messages extends Component {
                     </Comment.Group>
                 </Segment>
 
-                <MessageForm messagesRef={messagesRef} chanel={this.props.chanel} user={this.props.user} />
+                <MessageForm messagesRef={messagesRef} chanel={chanel} user={user} />
 
             </React.Fragment>
         )

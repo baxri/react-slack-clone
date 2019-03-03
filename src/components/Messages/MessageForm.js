@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import uuidV4 from "uuid/v4";
 import { Segment, Button, Input, Message } from "semantic-ui-react";
 
 import firebase from "../../firebase";
 import FileModal from "./FileModal";
+import ProgresBar from "./ProgresBar";
 
 export default class MessageForm extends Component {
 
@@ -10,6 +12,11 @@ export default class MessageForm extends Component {
         super(props)
 
         this.state = {
+            storageRef: firebase.storage().ref(),
+            prcentUploaded: 0,
+            uploadTask: null,
+            uploadState: 0,
+
             message: '',
             loading: false,
             error: '',
@@ -28,6 +35,57 @@ export default class MessageForm extends Component {
     closeModal = () => {
         this.setState({ modal: false });
     }
+
+    uploadFile = (file, metadata) => {
+
+        const { messagesRef, chanel, user } = this.props;
+
+        const filePath = `chat/public/${uuidV4()}.jpg`;
+
+        this.setState({
+            uploadState: 1,
+            uploadTask: this.state.storageRef.child(filePath).put(file, metadata)
+        }, () => {
+
+            this.state.uploadTask.on('state_changed', snap => {
+
+                // console.log(snap.bytesTransferred)
+                // console.log(snap.totalBytes)
+
+                const prcentUploaded = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+                this.setState({ prcentUploaded });
+            }, err => {
+                this.setState({ error: err, uploadState: 0, uploadTask: null });
+            },
+                () => {
+                    this.state.uploadTask.snapshot.ref.getDownloadURL().then(downloadedURL => {
+
+                        const messageObject = {
+                            timestamp: firebase.database.ServerValue.TIMESTAMP,
+                            image: downloadedURL,
+                            user: {
+                                id: user.uid,
+                                name: user.displayName,
+                                avatar: user.photoURL,
+                            }
+                        };
+
+                        messagesRef.child(chanel.id).push().set(messageObject).then(data => {
+                            this.setState({ uploadState: 0, });
+                        }).catch(err => {
+                            this.setState({ error: err.message })
+                        });
+
+                    }).catch(err => {
+                        this.setState({ error: err, uploadState: 0, uploadTask: null });
+                    })
+                }
+            );
+
+
+        });
+    }
+
 
     sendMessage = async () => {
 
@@ -63,8 +121,7 @@ export default class MessageForm extends Component {
 
     render() {
 
-        const { error, message, loading, modal } = this.state;
-
+        const { error, message, loading, modal, uploadState, prcentUploaded } = this.state;
 
         return (
             <Segment className="messages-form">
@@ -94,12 +151,14 @@ export default class MessageForm extends Component {
                         content="Upload Media"
                         labelPosition="right"
                         icon="cloud upload"
+                        disabled={uploadState > 0}
                         onClick={this.openModal}
                     />
 
-                    <FileModal modal={modal} closeModal={this.closeModal} />
+                    <FileModal modal={modal} closeModal={this.closeModal} uploadFile={this.uploadFile} />
 
                 </Button.Group>
+                <ProgresBar prcentUploaded={prcentUploaded} state={uploadState} />
             </Segment>
         )
     }

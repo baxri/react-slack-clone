@@ -18,14 +18,14 @@ class App extends Component {
 
         <Grid >
           <Grid.Column only='tablet computer'>
-            <SidePanel key={user && user.id} user={user} className="sidepanel-col" />
+            {user && <SidePanel user={user} className="sidepanel-col" />}
           </Grid.Column>
         </Grid>
 
         {/* <ColorPanel /> */}
 
         <Grid.Column className="messages-col" >
-          <Messages key={chanel && chanel.id} chanel={chanel} user={user} />
+          {chanel && <Messages chanel={chanel} user={user} />}
         </Grid.Column>
 
         <Grid >

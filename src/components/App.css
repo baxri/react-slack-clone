@@ -55,13 +55,20 @@ body,
 .messages-form{
   position: absolute !important;
   width: 100%;
-  height: 120px;
+  min-height: 120px;
   bottom: 0px; 
   left: 0px;
   z-index: 100;
-  
+}
+
+.message-image{
+  padding: 1em;
 }
 
 .metapanel-col{
   width: 400px;
+}
+
+.progress-bar{
+  margin: 0.3em 0 0 0 !important;
 }

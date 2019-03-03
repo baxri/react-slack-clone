@@ -17,10 +17,7 @@ export default class SidePanel extends Component {
                 // fixed="left"
                 style={{ background: "#4c3c4c", fontSize: "1.2em", height: '100vh' }}
                 className="side-panel"
-                only='computer tablet'
-                
             >
-
                 <UserPanel user={user} />
                 <Chanels user={user} />
             </Menu>
