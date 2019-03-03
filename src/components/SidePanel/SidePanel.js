@@ -14,8 +14,9 @@ export default class SidePanel extends Component {
                 size="large"
                 inverted
                 vertical
-                fixed="left"
+                // fixed="left"
                 style={{ background: "#4c3c4c", fontSize: "1.2em" }}
+                className="side-panel"
             >
 
                 <UserPanel user={user} />

@@ -4,8 +4,8 @@ import { Header, Segment, Input, Icon } from "semantic-ui-react";
 export default class MessageHeader extends Component {
     render() {
         return (
-            <Segment clearing>
-                <Header  as="h2" floated="left" >
+            <Segment  className="messages-header">
+                <Header as="h2" floated="left" >
                     <span>
                         Chanels
                         <Icon name="star outline" color="black" />

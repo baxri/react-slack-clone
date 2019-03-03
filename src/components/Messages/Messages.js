@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { Segment, Comment } from "semantic-ui-react";
+import { Segment, Comment, Grid } from "semantic-ui-react";
 
 import firebase from "../../firebase";
 
 import MessageHeader from "./MessageHeader";
 import MessageForm from "./MessageForm";
+import Message from "./Message";
+
 
 export default class Messages extends Component {
 
@@ -12,24 +14,50 @@ export default class Messages extends Component {
         super(props)
 
         this.state = {
-
+            messages: [],
             messagesRef: firebase.database().ref('messages'),
         }
     }
 
+    componentDidMount() {
+
+        const { user, chanel } = this.props;
+        if (user && chanel) {
+            console.log('very good')
+            this.addListeners(chanel);
+        }
+    }
+
+    addListeners = (chanel) => {
+
+        let messages = [];
+
+        const { messagesRef } = this.state;
+
+
+        messagesRef.child(chanel.id).on('child_added', snap => {
+            messages.push(snap.val());
+            this.setState({ messages: messages });
+        })
+    }
 
     render() {
+
+        const { messagesRef, messages } = this.state;
+        const { user } = this.props;
+
         return (
             <React.Fragment>
                 <MessageHeader />
 
-                <Segment>
-                    <Comment.Group className="messages">
-                        {/* Messages */}
+                <Segment className="messages-content">
+                    <Comment.Group>
+                        {messages.length > 0 && messages.map(message => (<Message key={message.timestamp} message={message} user={user} />))}
                     </Comment.Group>
                 </Segment>
 
-                <MessageForm messagesRef={this.state.messagesRef} />
+                <MessageForm messagesRef={messagesRef} chanel={this.props.chanel} user={this.props.user} />
+
             </React.Fragment>
         )
     }

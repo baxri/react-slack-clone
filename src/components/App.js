@@ -16,27 +16,23 @@ class App extends Component {
     return (
       <Grid columns="equal">
 
-        <SidePanel user={user} />
-        <ColorPanel />
+        <SidePanel key={user && user.id} user={user} className="sidepanel-col" />
+        {/* <ColorPanel /> */}
 
-        <Grid.Column style={{ marginLeft: "240px" }}>
-          <Messages chanel={chanel} />
+        <Grid.Column className="messages-col">
+          <Messages key={chanel && chanel.id} chanel={chanel} user={user} />
         </Grid.Column>
 
-        <Grid.Column width="4">
-          <MetaPanel />
-        </Grid.Column>
+        <MetaPanel />
 
-
-
-      </Grid>
+      </Grid >
     );
   }
 }
 
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user, chanel }) => ({
   user: user.currentUser,
-  chanel: user.currentChanel,
+  chanel: chanel.currentChanel,
 })
 
 export default connect(mapStateToProps)(App);
