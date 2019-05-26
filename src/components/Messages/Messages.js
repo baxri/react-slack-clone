@@ -14,11 +14,13 @@ export default class Messages extends Component {
         super(props)
 
         this.state = {
+            isPrivateChanel: this.props.isPrivateChanel,
             messages: [],
             searchResult: [],
             searchLoader: false,
             searchTerm: '',
             messagesRef: firebase.database().ref('messages'),
+            privateMessagesRef: firebase.database().ref('privateMessages'),
         }
     }
 
@@ -29,17 +31,23 @@ export default class Messages extends Component {
         }
     }
 
+    getMessagesRef = () => {
+      const { messagesRef, privateMessagesRef, isPrivateChanel } = this.state;
+      return isPrivateChanel ? privateMessagesRef : messagesRef;
+    };
+
     addListeners = (chanel) => {
 
         let messages = [];
 
-        const { messagesRef } = this.state;
+        // const { messagesRef } = this.state;
+        const messagesRef = this.getMessagesRef();
 
         messagesRef.child(chanel.id).on('child_added', snap => {
             messages.push(snap.val());
             this.setState({ messages: messages });
         })
-    }
+    };
 
     handleSearch = (e) => {
 
@@ -54,11 +62,11 @@ export default class Messages extends Component {
         }, []);
 
         this.setState({ searchResult, searchLoader: false });
-    }
+    };
 
     render() {
 
-        const { messagesRef, messages, searchResult, searchTerm, searchLoader } = this.state;
+        const { messagesRef, messages, searchResult, searchTerm, searchLoader, isPrivateChanel } = this.state;
         const { user, chanel } = this.props;
 
         const displayMessages = searchTerm.length > 0 ? searchResult : messages;
@@ -73,7 +81,7 @@ export default class Messages extends Component {
                     </Comment.Group>
                 </Segment>
 
-                <MessageForm messagesRef={messagesRef} chanel={chanel} user={user} />
+                <MessageForm messagesRef={messagesRef} chanel={chanel} user={user} isPrivateChanel={isPrivateChanel} getMessagesRef={this.getMessagesRef} />
 
             </React.Fragment>
         )
