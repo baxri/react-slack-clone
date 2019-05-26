@@ -44,22 +44,16 @@ export default class Messages extends Component {
     handleSearch = (e) => {
 
         const searchTerm = e.target.value.toLowerCase();
-
         this.setState({ searchTerm: searchTerm, searchLoader: true });
-
         const messages = [...this.state.messages];
-
         const searchResult = messages.reduce((acc, message) => {
-
             if (message.content && message.content.toLowerCase().indexOf(searchTerm) > -1) {
                 acc.push(message);
             }
-
             return acc;
         }, []);
 
         this.setState({ searchResult, searchLoader: false });
-
     }
 
     render() {

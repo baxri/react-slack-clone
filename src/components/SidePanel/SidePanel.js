@@ -21,7 +21,7 @@ export default class SidePanel extends Component {
             >
                 <UserPanel user={user} />
                 <Chanels user={user} />
-                <DirectMessages />
+                <DirectMessages user={user} />
             </Menu>
         )
     }
