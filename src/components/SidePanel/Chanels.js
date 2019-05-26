@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Menu, Icon, Modal, Form, Input, Button, Message, Grid, Dimmer, Image, Segment } from "semantic-ui-react";
 import firebase from "../../firebase";
-import { setCurrentChanel } from "../../actions/index";
+import { setCurrentChanel, setPrivateChanel } from "../../actions/index";
 
 class Chanels extends Component {
 
@@ -50,6 +50,7 @@ class Chanels extends Component {
 
         if (this.state.firstLoad && this.state.chanels.length > 0) {
             this.props.setCurrentChanel(this.state.chanels[0]);
+            this.props.setPrivateChanel(false);
         }
 
         this.setState({ firstLoad: false });
@@ -104,6 +105,7 @@ class Chanels extends Component {
 
     changeChanel = chanel => {
         this.props.setCurrentChanel(chanel);
+        this.props.setPrivateChanel(false);
     }
 
     openModal = () => this.setState({ modal: true });
@@ -169,4 +171,4 @@ const mapStateToProps = ({ chanel }) => ({
     chanel: chanel.currentChanel
 })
 
-export default connect(mapStateToProps, { setCurrentChanel })(Chanels);
+export default connect(mapStateToProps, { setCurrentChanel, setPrivateChanel })(Chanels);
