@@ -21,6 +21,7 @@ class DirectMessages extends Component {
 
     componentDidMount() {
         if (this.state.user) {
+            console.log(this.state.user);
             this.addListeners(this.state.user.uid);
         }
     }

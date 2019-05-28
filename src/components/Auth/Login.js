@@ -9,8 +9,8 @@ export default class Login extends Component {
     super(props)
 
     this.state = {
-      email: 'test@test.com',
-      password: 'test123',
+      email: 'bibi@bibi.com',
+      password: 'gio123456',
       error: '',
       loading: false,
       usersRef: firebase.database().ref('users'),
