@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d7568969-16e0-430f-9f5e-243f8b2d20e0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/Messages/MessageForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Messages/MessageForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Messages/Messages.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Messages/Messages.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SidePanel/DirectMessages.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SidePanel/DirectMessages.js" afterDir="false" />
-    </list>
+    <list default="true" id="d7568969-16e0-430f-9f5e-243f8b2d20e0" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -40,8 +36,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/SidePanel/DirectMessages.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="106" column="51" selection-start-line="106" selection-start-column="51" selection-end-line="106" selection-end-column="51" />
+            <state relative-caret-position="350">
+              <caret line="122" column="62" lean-forward="true" selection-start-line="122" selection-start-column="62" selection-end-line="122" selection-end-column="62" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -244,12 +240,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558863487102</updated>
-      <workItem from="1558863488493" duration="7434000" />
+      <workItem from="1558863488493" duration="7823000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7434000" />
+    <option name="totallyTimeSpent" value="7823000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -257,12 +253,12 @@
     <layout>
       <window_info id="npm" sideWeight="0.50074965" side_tool="true" weight="0.1627907" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49925038" visible="true" weight="0.1627907" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49925038" visible="true" weight="0.1627907" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="TypeScript" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.15356265" />
+      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.15356265" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -383,8 +379,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/SidePanel/DirectMessages.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="106" column="51" selection-start-line="106" selection-start-column="51" selection-end-line="106" selection-end-column="51" />
+        <state relative-caret-position="350">
+          <caret line="122" column="62" lean-forward="true" selection-start-line="122" selection-start-column="62" selection-end-line="122" selection-end-column="62" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
