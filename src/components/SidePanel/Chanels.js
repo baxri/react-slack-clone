@@ -48,37 +48,48 @@ class Chanels extends Component {
     }
 
     addNotificationListener = (chanelID) => {
-        this.state.messagesRef.child(chanelID).once('value', snap => {
+        this.state.messagesRef.child(chanelID).on('value', snap => {
             this.handleNotifications(chanelID, snap);
         })
     }
 
     handleNotifications = (chanelID, snap) => {
 
-        const { chanel } = this.props;
         const { notifications } = this.state;
+        const { chanel } = this.props;
+
 
         if (notifications[chanelID]) {
+            if (chanel.id !== chanelID) {
+                let lastTotalMessages = notifications[chanelID].messages;
 
-            let lastTotalMessages = notifications[chanelID].messages;
-
-
-            notifications[chanelID] = {
-                messages: snap.numChildren(),
-                unreadMessages: snap.numChildren() - lastTotalMessages,
-            };
+                if (snap.numChildren() - lastTotalMessages > 0) {
+                    notifications[chanelID] = {
+                        messages: lastTotalMessages,
+                        unreadMessages: snap.numChildren() - lastTotalMessages,
+                        latestMessages: snap.numChildren(),
+                    };
+                }
+            } else {
+                notifications[chanelID] = {
+                    messages: snap.numChildren(),
+                    latestMessages: snap.numChildren(),
+                    unreadMessages: 0,
+                };
+            }
         } else {
             notifications[chanelID] = {
                 messages: snap.numChildren(),
+                latestMessages: snap.numChildren(),
                 unreadMessages: 0,
             };
-
-            console.log('OK')
         }
 
 
+        console.log(notifications)
 
         this.setState({ notifications });
+
     }
 
     removeListeners = () => {
@@ -146,14 +157,37 @@ class Chanels extends Component {
         this.props.setCurrentChanel(chanel);
         this.props.setPrivateChanel(false);
         this.setState({ chanel });
+        this.clearNotifications(chanel.id);
     }
 
     openModal = () => this.setState({ modal: true });
     closeModal = () => this.setState({ modal: false });
 
+    getNotifications = chanelId => {
+
+        const { notifications } = this.state;
+
+        if (notifications[chanelId] && notifications[chanelId].unreadMessages > 0) {
+            return <Label color="red">{notifications[chanelId].unreadMessages}</Label>;
+        }
+
+        return null;
+    }
+
+    clearNotifications = chanelId => {
+
+        const { notifications } = this.state;
+
+        if (notifications[chanelId]) {
+            notifications[chanelId].unreadMessages = 0;
+            notifications[chanelId].messages = notifications[chanelId].latestMessages;
+            this.setState({ notifications });
+        }
+    }
+
     render() {
 
-        const { chanels, modal, error, chanelsLoading } = this.state;
+        const { chanels, modal, error } = this.state;
         const { chanel } = this.props;
 
         return (
@@ -167,7 +201,7 @@ class Chanels extends Component {
                     </Menu.Item>
 
                     {chanels.length > 0 && chanels.map(item => (<Menu.Item active={item == chanel} key={item.id} onClick={() => this.changeChanel(item)}>
-                        # {item.name} <Label color="red">3</Label>
+                        # {item.name} {this.getNotifications(item.id)}
                     </Menu.Item>))}
 
                     <Modal open={modal} onClose={this.closeModal}>
