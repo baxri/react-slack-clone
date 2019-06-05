@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Menu, Icon, Modal, Form, Input, Button, Message, Grid, Dimmer, Image, Segment } from "semantic-ui-react";
+import { Menu, Icon, Modal, Form, Input, Button, Message, Grid, Dimmer, Image, Segment, Label } from "semantic-ui-react";
 import firebase from "../../firebase";
 import { setCurrentChanel, setPrivateChanel } from "../../actions/index";
 
@@ -10,6 +10,7 @@ class Chanels extends Component {
         super(props)
 
         this.state = {
+            chanel: null,
             user: this.props.user,
             chanelName: '',
             chanelDetails: '',
@@ -21,6 +22,9 @@ class Chanels extends Component {
             firstLoad: true,
 
             chanelsRef: firebase.database().ref('chanels'),
+            messagesRef: firebase.database().ref('messages'),
+
+            notifications: [],
         }
     }
 
@@ -39,7 +43,42 @@ class Chanels extends Component {
         this.state.chanelsRef.on('child_added', snap => {
             chanels.push(snap.val());
             this.setState({ chanels: chanels, chanelsLoading: false }, () => this.setDefaultChanel());
+            this.addNotificationListener(snap.key);
         })
+    }
+
+    addNotificationListener = (chanelID) => {
+        this.state.messagesRef.child(chanelID).once('value', snap => {
+            this.handleNotifications(chanelID, snap);
+        })
+    }
+
+    handleNotifications = (chanelID, snap) => {
+
+        const { chanel } = this.props;
+        const { notifications } = this.state;
+
+        if (notifications[chanelID]) {
+
+            let lastTotalMessages = notifications[chanelID].messages;
+
+
+            notifications[chanelID] = {
+                messages: snap.numChildren(),
+                unreadMessages: snap.numChildren() - lastTotalMessages,
+            };
+        } else {
+            notifications[chanelID] = {
+                messages: snap.numChildren(),
+                unreadMessages: 0,
+            };
+
+            console.log('OK')
+        }
+
+
+
+        this.setState({ notifications });
     }
 
     removeListeners = () => {
@@ -106,6 +145,7 @@ class Chanels extends Component {
     changeChanel = chanel => {
         this.props.setCurrentChanel(chanel);
         this.props.setPrivateChanel(false);
+        this.setState({ chanel });
     }
 
     openModal = () => this.setState({ modal: true });
@@ -127,7 +167,7 @@ class Chanels extends Component {
                     </Menu.Item>
 
                     {chanels.length > 0 && chanels.map(item => (<Menu.Item active={item == chanel} key={item.id} onClick={() => this.changeChanel(item)}>
-                        # {item.name}
+                        # {item.name} <Label color="red">3</Label>
                     </Menu.Item>))}
 
                     <Modal open={modal} onClose={this.closeModal}>
