@@ -16,6 +16,8 @@ class DirectMessages extends Component {
             usersRef: firebase.database().ref("users"),
             presenceRef: firebase.database().ref("presence"),
             connectedRef: firebase.database().ref(".info/connected"),
+
+            notifications: [],
         }
     }
 
