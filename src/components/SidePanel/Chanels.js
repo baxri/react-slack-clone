@@ -83,12 +83,7 @@ class Chanels extends Component {
             };
         }
 
-
-        console.log("before state");
         this.setState({ notifications });
-        console.log("after state");
-
-
     }
 
     removeListeners = () => {

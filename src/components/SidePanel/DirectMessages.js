@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Icon } from "semantic-ui-react";
+import { Menu, Icon, Label } from "semantic-ui-react";
 import firebase from "../../firebase";
 import { connect } from "react-redux";
 import { setCurrentChanel, setPrivateChanel } from "../../actions/index";
@@ -16,6 +16,7 @@ class DirectMessages extends Component {
             usersRef: firebase.database().ref("users"),
             presenceRef: firebase.database().ref("presence"),
             connectedRef: firebase.database().ref(".info/connected"),
+            messagesRef: firebase.database().ref('privateMessages'),
 
             notifications: [],
         }
@@ -33,10 +34,12 @@ class DirectMessages extends Component {
         this.state.usersRef.on("child_added", snap => {
             let user = snap.val();
             if (uid !== snap.key) {
+                user['id'] = this.getChanelId(snap.key);
                 user['uid'] = snap.key;
                 user['status'] = "offline";
                 loadedUsers.push(user);
                 this.setState({ users: loadedUsers });
+                this.addNotificationListener(user.id);
             }
         });
 
@@ -61,6 +64,73 @@ class DirectMessages extends Component {
             this.addStatusToUser(snap.key, false);
         });
     };
+
+    addNotificationListener = (chanelID) => {
+        this.state.messagesRef.child(chanelID).on('value', snap => {
+            this.handleNotifications(chanelID, snap);
+        })
+    }
+
+    handleNotifications = (chanelID, snap) => {
+
+        const { notifications, activeChanel } = this.state;
+
+        const activeChanelID = this.getChanelId(activeChanel);
+
+        if (notifications[chanelID]) {
+            if (activeChanelID !== chanelID) {
+                let lastTotalMessages = notifications[chanelID].messages;
+
+                if (snap.numChildren() - lastTotalMessages > 0) {
+                    notifications[chanelID] = {
+                        messages: lastTotalMessages,
+                        unreadMessages: snap.numChildren() - lastTotalMessages,
+                        latestMessages: snap.numChildren(),
+                    };
+                }
+            } else {
+                notifications[chanelID] = {
+                    messages: snap.numChildren(),
+                    latestMessages: snap.numChildren(),
+                    unreadMessages: 0,
+                };
+            }
+        } else {
+            notifications[chanelID] = {
+                messages: snap.numChildren(),
+                latestMessages: snap.numChildren(),
+                unreadMessages: 0,
+            };
+        }
+
+        this.setState({ notifications });
+    }
+
+    getNotifications = userId => {
+
+        const { notifications } = this.state;
+
+        let chanelId = this.getChanelId(userId);
+
+        if (notifications[chanelId] && notifications[chanelId].unreadMessages > 0) {
+            return <Label color="red">{notifications[chanelId].unreadMessages}</Label>;
+        }
+
+        return null;
+    }
+
+    clearNotifications = userId => {
+
+        const { notifications } = this.state;
+
+        let chanelId = this.getChanelId(userId);
+
+        if (notifications[chanelId]) {
+            notifications[chanelId].unreadMessages = 0;
+            notifications[chanelId].messages = notifications[chanelId].latestMessages;
+            this.setState({ notifications });
+        }
+    }
 
     addStatusToUser = (userID, connected = true) => {
         const updatedUsers = this.state.users.map((user, key) => {
@@ -87,6 +157,7 @@ class DirectMessages extends Component {
         this.props.setCurrentChanel(channelData);
         this.props.setPrivateChanel(true);
         this.setState({ activeChanel: user.uid });
+        this.clearNotifications(user.uid);
     };
 
     getChanelId = userId => {
@@ -119,7 +190,7 @@ class DirectMessages extends Component {
                         <Icon name='circle'
                             color={this.isUserOnline(user) ? 'green' : 'red'}
                         />
-                        @ {user.name}
+                        @ {user.name} {this.getNotifications(user.uid)}
                     </Menu.Item>
                 )}
             </Menu.Menu>
