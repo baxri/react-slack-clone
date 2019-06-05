@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
-import {Menu, Icon} from "semantic-ui-react";
+import React, { Component } from 'react'
+import { Menu, Icon } from "semantic-ui-react";
 import firebase from "../../firebase";
-import {connect} from "react-redux";
-import {setCurrentChanel, setPrivateChanel} from "../../actions/index";
+import { connect } from "react-redux";
+import { setCurrentChanel, setPrivateChanel } from "../../actions/index";
 
 class DirectMessages extends Component {
 
@@ -21,7 +21,6 @@ class DirectMessages extends Component {
 
     componentDidMount() {
         if (this.state.user) {
-            console.log(this.state.user);
             this.addListeners(this.state.user.uid);
         }
     }
@@ -31,14 +30,13 @@ class DirectMessages extends Component {
 
         this.state.usersRef.on("child_added", snap => {
             let user = snap.val();
-            if (uid !== user.key) {
+            if (uid !== snap.key) {
                 user['uid'] = snap.key;
                 user['status'] = "offline";
                 loadedUsers.push(user);
-                this.setState({users: loadedUsers});
+                this.setState({ users: loadedUsers });
             }
         });
-
 
         this.state.connectedRef.on("value", snap => {
             if (snap.val() === true) {
@@ -54,29 +52,25 @@ class DirectMessages extends Component {
         });
 
         this.state.presenceRef.on("child_added", snap => {
-            if (uid !== snap.key) {
-                this.addStatusToUser(uid, true);
-            }
+            this.addStatusToUser(snap.key, true);
         });
 
         this.state.presenceRef.on("child_removed", snap => {
-            if (uid !== snap.key) {
-                this.addStatusToUser(uid, false);
-            }
+            this.addStatusToUser(snap.key, false);
         });
     };
 
     addStatusToUser = (userID, connected = true) => {
-        const updatedUsers = this.state.users.reduce((acc, user) => {
+        const updatedUsers = this.state.users.map((user, key) => {
 
             if (user.uid === userID) {
-                user['tatus'] = connected ? 'online' : 'offline';
+                user['status'] = connected ? 'online' : 'offline';
             }
 
-            return acc.concat(user);
-        }, []);
+            return user;
+        });
 
-        this.setState({users: updatedUsers});
+        this.setState({ users: updatedUsers });
     };
 
     changeChanel = user => {
@@ -90,7 +84,7 @@ class DirectMessages extends Component {
 
         this.props.setCurrentChanel(channelData);
         this.props.setPrivateChanel(true);
-        this.setState({activeChanel: user.uid});
+        this.setState({ activeChanel: user.uid });
     };
 
     getChanelId = userId => {
@@ -98,31 +92,31 @@ class DirectMessages extends Component {
         return currentUserId > userId ? `${userId}/${currentUserId}` : `${currentUserId}/${userId}`;
     };
 
-    isUserOnline = user => user.state === 'online';
+    isUserOnline = user => {
+        return user.status === 'online';
+    };
 
     isActive = user => {
-
-        console.log(user);
-        console.log(this.state.activeChanel);
-
         return user.uid === this.state.activeChanel;
     };
 
     render() {
 
-        const {users, user} = this.state;
+        const { users, user } = this.state;
 
         return (
-            <Menu.Menu className="menu" style={{marginTop: '10px',}}>
+            <Menu.Menu className="menu" style={{ marginTop: '10px', }}>
                 <Menu.Item>
                     <span>
-                        <Icon name="mail"/> DIRECT MESSAGES
+                        <Icon name="mail" /> DIRECT MESSAGES
                     </span>{' '}
                     ({users.length})
                 </Menu.Item>
                 {users.map(user =>
                     <Menu.Item key={user.uid} active={this.isActive(user)} onClick={() => this.changeChanel(user)}>
-                        <Icon name='circle' color={this.isUserOnline(user) ? 'green' : 'red'}/>
+                        <Icon name='circle'
+                            color={this.isUserOnline(user) ? 'green' : 'red'}
+                        />
                         @ {user.name}
                     </Menu.Item>
                 )}
@@ -131,5 +125,5 @@ class DirectMessages extends Component {
     }
 }
 
-export default connect(null, {setCurrentChanel, setPrivateChanel})(DirectMessages);
+export default connect(null, { setCurrentChanel, setPrivateChanel })(DirectMessages);
 
