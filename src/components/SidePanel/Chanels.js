@@ -10,7 +10,6 @@ class Chanels extends Component {
         super(props)
 
         this.state = {
-            chanel: null,
             user: this.props.user,
             chanelName: '',
             chanelDetails: '',
@@ -58,7 +57,6 @@ class Chanels extends Component {
         const { notifications } = this.state;
         const { chanel } = this.props;
 
-
         if (notifications[chanelID]) {
             if (chanel.id !== chanelID) {
                 let lastTotalMessages = notifications[chanelID].messages;
@@ -86,14 +84,16 @@ class Chanels extends Component {
         }
 
 
-        console.log(notifications)
-
+        console.log("before state");
         this.setState({ notifications });
+        console.log("after state");
+
 
     }
 
     removeListeners = () => {
         this.state.chanelsRef.off();
+        this.state.messagesRef.off();
     }
 
     setDefaultChanel = () => {
