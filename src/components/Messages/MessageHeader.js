@@ -9,6 +9,8 @@ export default class MessageHeader extends Component {
             return 0;
         }
 
+
+        
         const users = messages.reduce((acc, message) => {
             if (!acc.includes(message.user.id)) {
                 acc.push(message.user.id);
