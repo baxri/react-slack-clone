@@ -24,6 +24,7 @@ export default class MessageHeader extends Component {
 
         const { chanel, messages, handleSearch, searchLoader } = this.props;
 
+        
         return (
             <Segment className="messages-header">
                 <Header as="h2" floated="left" >
