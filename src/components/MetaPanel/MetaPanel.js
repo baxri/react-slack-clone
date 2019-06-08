@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Segment, Accordion, Header, Icon } from "semantic-ui-react";
+import { connect } from "react-redux";
 
-export default class MetaPanel extends Component {
+class MetaPanel extends Component {
 
     constructor(props) {
         super(props)
@@ -21,6 +22,7 @@ export default class MetaPanel extends Component {
     render() {
 
         const { activeIndex } = this.state;
+        const { currentChanel, isPrivateChanel } = this.state;
 
         return (
             <Segment>
@@ -33,7 +35,7 @@ export default class MetaPanel extends Component {
                         <Icon name="info" /> Chanel Details
                     </Accordion.Title>
                     <Accordion.Content active={activeIndex === 0}>
-                        Details
+                        {currentChanel.id}
                     </Accordion.Content>
                 </Accordion>
                 <Accordion styled attached="true">
@@ -59,3 +61,10 @@ export default class MetaPanel extends Component {
         )
     }
 }
+
+export default connect((state) => {
+    return {
+        currentChanel: state.currentChanel,
+        isPrivateChanel: state.isPrivateChanel,
+    }
+})(MetaPanel);
