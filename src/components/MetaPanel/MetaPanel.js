@@ -59,7 +59,10 @@ class MetaPanel extends Component {
                         <Icon name="pencil alternate" /> Created By
                     </Accordion.Title>
                     <Accordion.Content active={activeIndex === 2}>
-                        <Image src={chanel.createdBy.avatar} /> {chanel.createdBy.name}
+                        <Header as="h3">
+                            <Image circular src={chanel.createdBy.avatar} />
+                            {chanel.createdBy.name}
+                        </Header>
                     </Accordion.Content>
                 </Accordion>
             </Segment>

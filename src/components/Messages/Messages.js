@@ -73,7 +73,7 @@ export default class Messages extends Component {
 
         return (
             <React.Fragment>
-                <MessageHeader sideBarVisible={sideBarVisible} chanel={chanel} messages={messages} handleSearch={this.handleSearch} searchLoader={searchLoader} showSideBar={showSideBar} />
+                <Message Header sideBarVisible={sideBarVisible} chanel={chanel} messages={messages} handleSearch={this.handleSearch} searchLoader={searchLoader} showSideBar={showSideBar} />
 
                 <Segment className="messages-content">
                     <Comment.Group>
