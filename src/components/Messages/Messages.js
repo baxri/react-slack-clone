@@ -6,9 +6,11 @@ import firebase from "../../firebase";
 import MessageHeader from "./MessageHeader";
 import MessageForm from "./MessageForm";
 import Message from "./Message";
+import { connect } from 'react-redux';
+import { setMessages } from '../../actions/index';
 
 
-export default class Messages extends Component {
+class Messages extends Component {
 
     constructor(props) {
         super(props)
@@ -40,13 +42,16 @@ export default class Messages extends Component {
 
         let messages = [];
 
-        // const { messagesRef } = this.state;
         const messagesRef = this.getMessagesRef();
 
         messagesRef.child(chanel.id).on('child_added', snap => {
             messages.push(snap.val());
             this.setState({ messages: messages });
+            this.props.setMessages(messages);
         })
+
+
+        console.log('messages', messages)
     };
 
     handleSearch = (e) => {
@@ -73,7 +78,7 @@ export default class Messages extends Component {
 
         return (
             <React.Fragment>
-                <Message Header sideBarVisible={sideBarVisible} chanel={chanel} messages={messages} handleSearch={this.handleSearch} searchLoader={searchLoader} showSideBar={showSideBar} />
+                <MessageHeader sideBarVisible={sideBarVisible} chanel={chanel} messages={messages} handleSearch={this.handleSearch} searchLoader={searchLoader} showSideBar={showSideBar} />
 
                 <Segment className="messages-content">
                     <Comment.Group>
@@ -87,3 +92,9 @@ export default class Messages extends Component {
         )
     }
 }
+
+const mapStateToProps = ({ chanel }) => ({
+    messages: chanel.messages,
+});
+
+export default connect(mapStateToProps, { setMessages })(Messages);

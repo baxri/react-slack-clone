@@ -37,3 +37,15 @@ export const setPrivateChanel = (isPrivateChanel) => {
         }
     }
 }
+
+export const setMessages = (messages) => {
+
+    console.log('setMessages')
+
+    return {
+        type: actionTypes.SET_MESSAGES,
+        payload: {
+            messages
+        }
+    }
+}

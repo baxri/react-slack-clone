@@ -9,7 +9,12 @@ class MetaPanel extends Component {
 
         this.state = {
             activeIndex: 0,
+            userPosts: {},
         }
+    }
+
+    componentDidUpdate() {
+        this.conuntUserPosts();
     }
 
     setActiveIndex = (event, titleProps) => {
@@ -19,15 +24,35 @@ class MetaPanel extends Component {
         this.setState({ activeIndex: newIndex });
     }
 
+    conuntUserPosts = () => {
+        const { messages } = this.props;
+
+        let userPosts = messages.reduce((acc, message) => {
+
+
+            if (message.user.name in acc) {
+                acc[message.user.name].count = acc[message.user.name].count + 1;
+            } else {
+                acc[message.user.name] = {
+                    avatar: message.user.avatar,
+                    count: 1,
+                }
+            }
+
+            return acc;
+        }, {});
+
+        // console.log(userPosts)
+
+        return userPosts;
+    }
+
     render() {
 
         const { activeIndex } = this.state;
-        const { chanel, isPrivateChanel } = this.props;
+        const { chanel, messages, isPrivateChanel } = this.props;
 
         if (!chanel) return null;
-
-        console.log(chanel)
-        console.log(isPrivateChanel)
 
         return (
             <Segment>
@@ -72,6 +97,7 @@ class MetaPanel extends Component {
 
 const mapStateToProps = ({ chanel }) => ({
     chanel: chanel.currentChanel,
+    messages: chanel.messages,
     isPrivateChanel: chanel.isPrivateChanel,
 });
 
