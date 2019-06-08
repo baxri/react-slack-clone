@@ -14,7 +14,7 @@ class App extends Component {
         const {user, chanel, isPrivateChanel} = this.props;
 
         return (
-            <Grid columns="equal" stackable>
+            <Grid stackable columns='equal'>
 
                 <Grid>
                     <Grid.Column only='tablet computer'>
@@ -30,11 +30,10 @@ class App extends Component {
                 </Grid.Column>
 
                 <Grid>
-                    <Grid.Column only='tablet computer'>
+                    <Grid.Column only='computer'>
                         <MetaPanel/>
                     </Grid.Column>
                 </Grid>
-
             </Grid>
         );
     }

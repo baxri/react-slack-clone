@@ -19,7 +19,7 @@ export default class MessageHeader extends Component {
 
         return users.length;
     }
-
+s
     render() {
         const { chanel, messages, handleSearch, searchLoader } = this.props;
         
