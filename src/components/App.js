@@ -23,15 +23,6 @@ class App extends Component {
         const { user, chanel, isPrivateChanel } = this.props;
 
         return (<div>
-
-            <Button.Group>
-                <Button disabled={visible} onClick={this.handleShowClick}>
-                    Show sidebar
-          </Button>
-                <Button disabled={!visible} onClick={this.handleHideClick}>
-                    Hide sidebar
-          </Button>
-            </Button.Group>
             <Sidebar.Pushable as={Segment}>
                 <Sidebar
                     animation='slide along'
@@ -44,7 +35,7 @@ class App extends Component {
                     <Grid divided style={{ height: '100vh' }}>
                         <Grid.Column computer={11} tablet={16} mobile={16}>
                             {chanel &&
-                                <Messages key={chanel.id} chanel={chanel} user={user} isPrivateChanel={isPrivateChanel} showSideBar={this.handleShowClick} />}
+                                <Messages key={chanel.id} chanel={chanel} user={user} isPrivateChanel={isPrivateChanel} sideBarVisible={visible} showSideBar={this.handleShowClick} />}
                         </Grid.Column>
                         <Grid.Column computer={5} only='computer'>
                             <MetaPanel />
@@ -52,7 +43,6 @@ class App extends Component {
                     </Grid>
                 </Sidebar.Pusher>
             </Sidebar.Pushable>
-
         </div>
         );
     }
