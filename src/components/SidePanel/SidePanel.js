@@ -12,11 +12,11 @@ export default class SidePanel extends Component {
 
         return (
             <Menu
-                size="large"
+                // size="large"
                 inverted
                 vertical
                 // fixed="left"
-                style={{ background: "#4c3c4c", fontSize: "1.2em", height: '100vh' }}
+                style={{ background: "#4c3c4c", fontSize: "1.2em", height: '100vh', width: '100%' }}
                 className="side-panel"
             >
                 <UserPanel user={user} />
