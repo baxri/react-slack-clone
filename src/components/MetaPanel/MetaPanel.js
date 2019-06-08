@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Segment, Accordion, Header, Icon } from "semantic-ui-react";
+import { Segment, Accordion, Header, Icon, Image } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 class MetaPanel extends Component {
@@ -22,7 +22,12 @@ class MetaPanel extends Component {
     render() {
 
         const { activeIndex } = this.state;
-        const { currentChanel, isPrivateChanel } = this.state;
+        const { chanel, isPrivateChanel } = this.props;
+
+        if (!chanel) return null;
+
+        console.log(chanel)
+        console.log(isPrivateChanel)
 
         return (
             <Segment>
@@ -35,7 +40,7 @@ class MetaPanel extends Component {
                         <Icon name="info" /> Chanel Details
                     </Accordion.Title>
                     <Accordion.Content active={activeIndex === 0}>
-                        {currentChanel.id}
+                        {chanel.details}
                     </Accordion.Content>
                 </Accordion>
                 <Accordion styled attached="true">
@@ -54,7 +59,7 @@ class MetaPanel extends Component {
                         <Icon name="pencil alternate" /> Created By
                     </Accordion.Title>
                     <Accordion.Content active={activeIndex === 2}>
-                        Details
+                        <Image src={chanel.createdBy.avatar} /> {chanel.createdBy.name}
                     </Accordion.Content>
                 </Accordion>
             </Segment>
@@ -62,9 +67,9 @@ class MetaPanel extends Component {
     }
 }
 
-export default connect((state) => {
-    return {
-        currentChanel: state.currentChanel,
-        isPrivateChanel: state.isPrivateChanel,
-    }
-})(MetaPanel);
+const mapStateToProps = ({ chanel }) => ({
+    chanel: chanel.currentChanel,
+    isPrivateChanel: chanel.isPrivateChanel,
+});
+
+export default connect(mapStateToProps)(MetaPanel);
