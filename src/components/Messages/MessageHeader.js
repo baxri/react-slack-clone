@@ -21,7 +21,7 @@ export default class MessageHeader extends Component {
     }
 s
     render() {
-        const { chanel, messages, handleSearch, searchLoader } = this.props;
+        const { chanel, messages, handleSearch, searchLoader, showSideBar } = this.props;
         
         return (
             <Segment className="messages-header">

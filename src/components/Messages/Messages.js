@@ -67,13 +67,13 @@ export default class Messages extends Component {
     render() {
 
         const { messagesRef, messages, searchResult, searchTerm, searchLoader, isPrivateChanel } = this.state;
-        const { user, chanel } = this.props;
+        const { user, chanel, showSideBar } = this.props;
 
         const displayMessages = searchTerm.length > 0 ? searchResult : messages;
 
         return (
             <React.Fragment>
-                <MessageHeader chanel={chanel} messages={messages} handleSearch={this.handleSearch} searchLoader={searchLoader} />
+                <MessageHeader chanel={chanel} messages={messages} handleSearch={this.handleSearch} searchLoader={searchLoader} showSideBar={showSideBar} />
 
                 <Segment className="messages-content">
                     <Comment.Group>
