@@ -7,7 +7,7 @@ import MessageHeader from "./MessageHeader";
 import MessageForm from "./MessageForm";
 import Message from "./Message";
 import { connect } from 'react-redux';
-import { setMessages } from '../../actions/index';
+import { setMessages, setUserPosts } from '../../actions/index';
 
 
 class Messages extends Component {
@@ -49,9 +49,6 @@ class Messages extends Component {
             this.setState({ messages: messages });
             this.props.setMessages(messages);
         })
-
-
-        console.log('messages', messages)
     };
 
     handleSearch = (e) => {
@@ -97,4 +94,4 @@ const mapStateToProps = ({ chanel }) => ({
     messages: chanel.messages,
 });
 
-export default connect(mapStateToProps, { setMessages })(Messages);
+export default connect(mapStateToProps, { setMessages, setUserPosts })(Messages);

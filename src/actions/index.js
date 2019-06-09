@@ -39,13 +39,19 @@ export const setPrivateChanel = (isPrivateChanel) => {
 }
 
 export const setMessages = (messages) => {
-
-    console.log('setMessages')
-
     return {
         type: actionTypes.SET_MESSAGES,
         payload: {
             messages
+        }
+    }
+}
+
+export const setUserPosts = (userPosts) => {
+    return {
+        type: actionTypes.SET_USER_POSTS,
+        payload: {
+            userPosts
         }
     }
 }

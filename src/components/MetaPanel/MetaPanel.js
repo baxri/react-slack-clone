@@ -29,7 +29,6 @@ class MetaPanel extends Component {
 
         let userPosts = messages.reduce((acc, message) => {
 
-
             if (message.user.name in acc) {
                 acc[message.user.name].count = acc[message.user.name].count + 1;
             } else {
