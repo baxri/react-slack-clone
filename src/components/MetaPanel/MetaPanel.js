@@ -13,37 +13,11 @@ class MetaPanel extends Component {
         }
     }
 
-    componentDidUpdate() {
-        this.conuntUserPosts();
-    }
-
     setActiveIndex = (event, titleProps) => {
         const { index } = titleProps;
         const { activeIndex } = this.state;
         const newIndex = activeIndex === index ? -1 : index;
         this.setState({ activeIndex: newIndex });
-    }
-
-    conuntUserPosts = () => {
-        const { messages } = this.props;
-
-        let userPosts = messages.reduce((acc, message) => {
-
-            if (message.user.name in acc) {
-                acc[message.user.name].count = acc[message.user.name].count + 1;
-            } else {
-                acc[message.user.name] = {
-                    avatar: message.user.avatar,
-                    count: 1,
-                }
-            }
-
-            return acc;
-        }, {});
-
-        // console.log(userPosts)
-
-        return userPosts;
     }
 
     render() {
@@ -65,16 +39,6 @@ class MetaPanel extends Component {
                     </Accordion.Title>
                     <Accordion.Content active={activeIndex === 0}>
                         {chanel.details}
-                    </Accordion.Content>
-                </Accordion>
-                <Accordion styled attached="true">
-                    <Accordion.Title active={activeIndex === 1} index={1} onClick={this.setActiveIndex}>
-                        <Icon name="dropdown" />
-                        <Icon name="user circle" />
-                        Top Posters
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 1}>
-                        Details
                     </Accordion.Content>
                 </Accordion>
                 <Accordion styled attached="true">

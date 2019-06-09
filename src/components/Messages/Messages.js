@@ -47,7 +47,6 @@ class Messages extends Component {
         messagesRef.child(chanel.id).on('child_added', snap => {
             messages.push(snap.val());
             this.setState({ messages: messages });
-            this.props.setMessages(messages);
         })
     };
 
