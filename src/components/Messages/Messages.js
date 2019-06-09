@@ -129,7 +129,6 @@ class Messages extends Component {
                 </Segment>
 
                 <MessageForm messagesRef={messagesRef} chanel={chanel} user={user} isPrivateChanel={isPrivateChanel} getMessagesRef={this.getMessagesRef} />
-
             </React.Fragment>
         )
     }
