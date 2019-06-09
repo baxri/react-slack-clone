@@ -127,7 +127,6 @@ class Messages extends Component {
                     </Comment.Group>
                     {this.displayTypeingUsers(typeingUsers)}
                 </Segment>
-
                 <MessageForm messagesRef={messagesRef} chanel={chanel} user={user} isPrivateChanel={isPrivateChanel} getMessagesRef={this.getMessagesRef} />
             </React.Fragment>
         )
