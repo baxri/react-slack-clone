@@ -22,6 +22,7 @@ class Chanels extends Component {
 
             chanelsRef: firebase.database().ref('chanels'),
             messagesRef: firebase.database().ref('messages'),
+            typeingRef: firebase.database().ref('typeing'),
 
             notifications: [],
         }
@@ -148,7 +149,7 @@ class Chanels extends Component {
         return this.state.error.toLowerCase().indexOf(input.toLowerCase()) > -1;
     }
 
-    changeChanel = chanel => {
+    changeChanel = async chanel => {
         this.props.setCurrentChanel(chanel);
         this.props.setPrivateChanel(false);
         this.setState({ chanel });
