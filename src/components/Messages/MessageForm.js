@@ -27,12 +27,6 @@ export default class MessageForm extends Component {
         }
     }
 
-    async componentWillMount() {
-        const { chanel, user } = this.props;
-        const { typeingRef } = this.state;
-        await typeingRef.child(chanel.id).child(user.uid).remove();
-    }
-
     async componentWillReceiveProps() {
         const { chanel, user } = this.props;
         const { typeingRef } = this.state;

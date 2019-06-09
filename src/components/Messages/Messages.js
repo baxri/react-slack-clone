@@ -6,6 +6,7 @@ import firebase from "../../firebase";
 import MessageHeader from "./MessageHeader";
 import MessageForm from "./MessageForm";
 import Message from "./Message";
+import Typeing from "./Typeing";
 import { connect } from 'react-redux';
 import { setMessages, setUserPosts } from '../../actions/index';
 
@@ -80,6 +81,9 @@ class Messages extends Component {
                     <Comment.Group>
                         {displayMessages.length > 0 && displayMessages.map(message => (<Message key={message.timestamp} message={message} user={user} />))}
                     </Comment.Group>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <span className="user_typeing">Douglas is typeing</span> <Typeing />
+                    </div>
                 </Segment>
 
                 <MessageForm messagesRef={messagesRef} chanel={chanel} user={user} isPrivateChanel={isPrivateChanel} getMessagesRef={this.getMessagesRef} />

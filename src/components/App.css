@@ -72,3 +72,56 @@ body,
 .progress-bar{
   margin: 0.3em 0 0 0 !important;
 }
+
+
+.user__typeing{
+  font-style: italic;
+  font-weight: bold;
+  margin-right: 3px;
+}
+
+.typeing{
+  width: 5em;
+  height: 2em;
+  position: relative;
+  padding: 10px;
+  margin-left: 5px;
+  background: #e6e6e6;
+  border-radius: 20px;
+}
+
+@keyframes loadingFade{
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 0.8;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+
+.typeing__dot{
+  float: left;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  background: #8d8c91;
+  border-radius: 50%;
+  opacity: 0;
+  animation: loadingFade 1s infinite;
+}
+
+.typeing__dot:nth-child(0){
+  animation-delay: 0s;
+}
+.typeing__dot:nth-child(1){
+  animation-delay: 0.2s;
+}
+.typeing__dot:nth-child(2){
+  animation-delay: 0.4Fs;
+}
+
+
