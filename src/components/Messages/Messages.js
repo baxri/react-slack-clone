@@ -23,7 +23,10 @@ class Messages extends Component {
             searchLoader: false,
             searchTerm: '',
             messagesRef: firebase.database().ref('messages'),
+            typeingRef: firebase.database().ref('typeing'),
             privateMessagesRef: firebase.database().ref('privateMessages'),
+            connectedRef: firebase.database().ref(".info/connected"),
+            typeingUsers: [],
         }
     }
 
@@ -31,6 +34,7 @@ class Messages extends Component {
         const { user, chanel } = this.props;
         if (user && chanel) {
             this.addListeners(chanel);
+            this.addTypeingListeners(chanel);
         }
     }
 
@@ -49,6 +53,43 @@ class Messages extends Component {
             messages.push(snap.val());
             this.setState({ messages: messages });
         })
+    };
+
+    addTypeingListeners = (chanel) => {
+        let typeingUsers = [];
+
+        const { user } = this.props;
+        const { typeingRef, connectedRef } = this.state;
+
+        typeingRef.child(chanel.id).on('child_added', snap => {
+            // if (snap.key != user.uid) {
+            typeingUsers = typeingUsers.concat({
+                id: snap.key,
+                name: snap.val(),
+            });
+            // }
+
+            console.log(typeingUsers)
+
+            this.setState({ typeingUsers });
+        })
+
+        typeingRef.child(chanel.id).on('child_removed', snap => {
+
+            const index = typeingUsers.findIndex(user => user.id === snap.key);
+
+            if (index !== -1) {
+                typeingUsers = typeingUsers.filter(user => user.id !== snap.key);
+                this.setState({ typeingUsers });
+            }
+        })
+
+
+        connectedRef.on('value', snap => {
+            if (snap.val() === true) {
+                typeingRef.child(chanel.id).child(user.uid).onDisconnect().remove();
+            }
+        });
     };
 
     handleSearch = (e) => {

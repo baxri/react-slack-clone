@@ -150,10 +150,14 @@ class Chanels extends Component {
     }
 
     changeChanel = async chanel => {
+
+        const { typeingRef, user } = this.state;
+
         this.props.setCurrentChanel(chanel);
         this.props.setPrivateChanel(false);
         this.setState({ chanel });
         this.clearNotifications(chanel.id);
+        await typeingRef.child(chanel.id).child(user.uid).remove();
     }
 
     openModal = () => this.setState({ modal: true });
