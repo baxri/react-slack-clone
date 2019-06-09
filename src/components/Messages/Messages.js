@@ -69,8 +69,6 @@ class Messages extends Component {
             });
             // }
 
-            console.log(typeingUsers)
-
             this.setState({ typeingUsers });
         })
 
@@ -107,9 +105,14 @@ class Messages extends Component {
         this.setState({ searchResult, searchLoader: false });
     };
 
+    displayTypeingUsers = users => (
+        users.length > 0 && users.map(user => (<div key={user.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '2.0em', }}>
+            <span className="user_typeing">{user.name} is typeing</span> <Typeing />
+        </div>))
+    )
     render() {
 
-        const { messagesRef, messages, searchResult, searchTerm, searchLoader, isPrivateChanel } = this.state;
+        const { messagesRef, messages, searchResult, searchTerm, searchLoader, isPrivateChanel, typeingUsers } = this.state;
         const { user, chanel, showSideBar, sideBarVisible } = this.props;
 
         const displayMessages = searchTerm.length > 0 ? searchResult : messages;
@@ -122,9 +125,7 @@ class Messages extends Component {
                     <Comment.Group>
                         {displayMessages.length > 0 && displayMessages.map(message => (<Message key={message.timestamp} message={message} user={user} />))}
                     </Comment.Group>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <span className="user_typeing">Douglas is typeing</span> <Typeing />
-                    </div>
+                    {this.displayTypeingUsers(typeingUsers)}
                 </Segment>
 
                 <MessageForm messagesRef={messagesRef} chanel={chanel} user={user} isPrivateChanel={isPrivateChanel} getMessagesRef={this.getMessagesRef} />
