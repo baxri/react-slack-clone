@@ -120,7 +120,6 @@ class Messages extends Component {
         return (
             <React.Fragment>
                 <MessageHeader sideBarVisible={sideBarVisible} chanel={chanel} messages={messages} handleSearch={this.handleSearch} searchLoader={searchLoader} showSideBar={showSideBar} />
-
                 <Segment className="messages-content">
                     <Comment.Group>
                         {displayMessages.length > 0 && displayMessages.map(message => (<Message key={message.timestamp} message={message} user={user} />))}
